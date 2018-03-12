@@ -68,11 +68,13 @@ function cal_move_back(cal_cell_name) {
 	console.log("move back");
 	let month_name_class = cal_cell_name + "_month_name";
 	let year_name_class = cal_cell_name + "_year_name";
-	let elem_month_name = document.getElementsByClassName(month_name_class)[0];
+	let elem_month_name = document.getElementsByClassName(month_name_class)[0].innerHTML;
 	let month_num = cal_month_names().findIndex(e => e == elem_month_name);
-	let elem_year_name = document.getElementsByClassName(year_name_class)[0];
-	console.log(elem_month_name);
+	let elem_year_name = document.getElementsByClassName(year_name_class)[0].innerHTML;
+
+	console.log(month_num);
 	console.log(elem_year_name);
+
 //	elem_month_name.innerHTML = cal_month_names()[with_date.getMonth()];
 //	elem_year_name.innerHTML = with_date.getFullYear();
 //     <span class="daycell_month_name"></span>,
