@@ -1,0 +1,35 @@
+<style>
+span.toggled { color: orange; }
+</style>
+
+<script>
+function toggle(star_tag_name_base, which_star) {
+	let stars_all = []
+	let sa_idx = 0
+	for (var si_tmp = 1; si_tmp <= 20; si_tmp++) {
+		let tag_name = star_tag_name_base + si_tmp;
+		let star = document.getElementById(tag_name);
+		if (star == null) {
+			break;
+		}
+		stars_all[sa_idx] = star;
+		sa_idx += 1;
+	}
+	for (var si = 1; si <= stars_all.length; si++) {
+		let star = stars_all[si - 1];
+		if (si <= which_star) {
+			star.className = 'toggled';
+		} else {
+			star.className = '';
+		}
+	}
+}
+</script>
+
+<big>
+<big>
+<span id="star1" onclick="toggle('star', 1)">*</span>
+<span id="star2" onclick="toggle('star', 2)">*</span>
+<span id="star3" onclick="toggle('star', 3)">*</span>
+<span id="star4" onclick="toggle('star', 4)">*</span>
+<span id="star5" onclick="toggle('star', 5)">*</span>
