@@ -1,0 +1,37 @@
+<style>
+span.add { background-color: yellow; border: solid 1px red; border-radius: 5px; margin: 3px; padding: 3px; }
+</style>
+
+<script>
+
+function add() {
+	let inp = document.getElementById('base');
+	let val = inp.value;
+	inp.value = "";
+
+	let range = document.createRange();
+	let newNode = document.createElement("span");
+	newNode.className = "todo";
+	newNode.appendChild(document.createTextNode(val));
+	newNode.appendChild(document.createElement('br'));
+	range.selectNode(document.getElementsByClassName("todo").item(0));
+	range.insertNode(newNode);
+
+}
+
+</script>
+
+<form>
+<input id="base" type="text"> <span class="add" onclick="add()">+</span>
+</form>
+
+<br />
+<br />
+<br />
+
+<span class="todo">todo item one</span>
+<br />
+
+<span class="todo">todo item two</span>
+<br />
+
