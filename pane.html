@@ -1,0 +1,41 @@
+<style>
+table, td { border: dotted 1px blue; }
+</style>
+
+<script>
+function toggle_pane(pane_base_name, pane_index) {
+	let pane_name = pane_base_name + pane_index;
+	console.log(pane_name);
+	let pane = document.getElementsByClassName(pane_name)[0];
+	console.log(pane);
+	console.log(pane.hidden);
+	if (pane.hidden === undefined) {
+		pane.hidden = true;
+	} else {
+		pane.hidden = !pane.hidden;
+	}
+}
+</script>
+
+<table width="30%">
+  <tbody>
+    <tr>
+      <td colspan="3">
+        <span onclick="toggle_pane('pane', 1)"><u>left</u></span>
+        <span onclick="toggle_pane('pane', 2)"><u>center</u></span>
+        <span onclick="toggle_pane('pane', 3)"><u>right</u></span>
+      </td>
+    </tr>
+    <tr>
+      <td class="pane1">
+      	left
+      </td>
+      <td class="pane2">
+      	center
+      </td>
+      <td class="pane3">
+      	right
+      </td>
+    </tr>
+  </tbody>
+</table>
