@@ -48,9 +48,9 @@ console.log("fst_of_month get day: ", fst_of_month.getDay());
 	//Mon=0,Tue=1,Wed=2,Thu=3,Fri=4,Sat=5,Sun=6 <- us
 	let skip_days_num = fst_of_month.getDay() - 1;
 console.log("skip_days_num", skip_days_num);
-	let day_cells = document.getElementsByClassName(cal_cell_name);
+	let el_days = document.getElementsByClassName(cal_cell_name);
 	let day_to_draw = 1;
-	for (cell of day_cells) {
+	for (el_day of el_days) {
 		if (skip_days_num > 0) {
 			skip_days_num -= 1;
 			continue;
@@ -58,11 +58,11 @@ console.log("skip_days_num", skip_days_num);
 console.log("day_to_draw", day_to_draw);
 		let idx_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), day_to_draw);
 //console.log("idx_date", idx_date);
-		cell.innerHTML = idx_date.getDate();
+		el_day.innerHTML = idx_date.getDate();
 		if (day_to_draw === cur_date.getDate()) {
-			//cell.setAttribute('class', cell.getAttribute('class') + " active")
-			//cell.innerHTML = "*" + cell.innerHTML;
-			cell.className += " active";
+			//el_day.setAttribute('class', el_day.getAttribute('class') + " active")
+			//el_day.innerHTML = "*" + el_day.innerHTML;
+			el_day.className += " active";
 		}
 		day_to_draw += 1;
 		idx_date = null;
