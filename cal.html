@@ -16,18 +16,23 @@
 </head>
 
 <script>
+// el_= DOM element after lookup
+// cln_= DOM class name
 function cal_month_names() {
 	return ["January", "February", "March", "April", "May", "June",
 		"July", "August", "September", "October", "November", "December" ];
 }
+function cal_month_index(month_name) {
+	return cal_month_names().findIndex(m => m == month_name);
+}
 
 function cal_update_header(cal_cell_name, with_date) {
-	let month_name_class = cal_cell_name + "_month_name";
-	let year_name_class = cal_cell_name + "_year_name";
-	let elem_month_name = document.getElementsByClassName(month_name_class)[0];
-	let elem_year_name = document.getElementsByClassName(year_name_class)[0];
-	elem_month_name.innerHTML = cal_month_names()[with_date.getMonth()];
-	elem_year_name.innerHTML = with_date.getFullYear();
+	let cln_month_name = cal_cell_name + "_month_name";
+	let cln_year_name = cal_cell_name + "_year_name";
+	let el_month_name = document.getElementsByClassName(cln_month_name)[0];
+	let el_year_name = document.getElementsByClassName(cln_year_name)[0];
+	el_month_name.innerHTML = cal_month_names()[with_date.getMonth()];
+	el_year_name.innerHTML = with_date.getFullYear();
 }
 
 function cal(cal_cell_name) {
