@@ -69,24 +69,44 @@ console.log("day_to_draw", day_to_draw);
 	}
 }
 
-function cal_move_back(cal_cell_name) {
+function cal_move_back_or_forth(cal_cell_name, direction) {
 	console.log("move back");
-	let month_name_class = cal_cell_name + "_month_name";
-	let year_name_class = cal_cell_name + "_year_name";
-	let elem_month_name = document.getElementsByClassName(month_name_class)[0].innerHTML;
-	let month_num = cal_month_names().findIndex(e => e == elem_month_name);
-	let elem_year_name = document.getElementsByClassName(year_name_class)[0].innerHTML;
+	let cln_month_name = cal_cell_name + "_month_name";
+	let cln_year_name = cal_cell_name + "_year_name";
+	let el_month_name = document.getElementsByClassName(cln_month_name)[0];
+	let el_year_name = document.getElementsByClassName(cln_year_name)[0];
 
+	let month_name = el_month_name.innerHTML;
+	let year_num = parseInt(el_year_name.innerHTML);
+	let month_num = cal_month_index(month_name);
+
+	let year_num_next = year_num;
+	let month_num_next = (month_num + direction);
+	if (month_num_next < 0) {
+		month_num_next = cal_month_names().length - 1;
+		year_num_next -= 1;
+	}
+	if (month_num_next >= 12) {
+		month_num_next = 0;
+		year_num_next += 1;
+	}
+
+	console.log("==========");
 	console.log(month_num);
-	console.log(elem_year_name);
+	console.log(el_year_name);
+	console.log(month_num_next);
+	console.log(year_num_next);
 
-//	elem_month_name.innerHTML = cal_month_names()[with_date.getMonth()];
-//	elem_year_name.innerHTML = with_date.getFullYear();
-//     <span class="daycell_month_name"></span>,
-//     <span class="daycell_year_name"></span>
+	el_month_name.innerHTML = cal_month_names()[month_num_next];
+	el_year_name.innerHTML = year_num_next;
+	
+	// XX TODO redraw calendar here!!!
 }
-function cal_move_forward() {
-	console.log("move forward");
+function cal_move_back(cln) {
+	cal_move_back_or_forth(cln, -1);
+}
+function cal_move_forward(cln) {
+	cal_move_back_or_forth(cln, 1);
 }
 </script>
 
