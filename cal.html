@@ -25,49 +25,60 @@ function cal_month_names() {
 function cal_month_index(month_name) {
 	return cal_month_names().findIndex(m => m == month_name);
 }
-
-function cal_update_header(cal_cell_name, with_date) {
+function cal_hdr_month_el(cal_cell_name) {
 	let cln_month_name = cal_cell_name + "_month_name";
-	let cln_year_name = cal_cell_name + "_year_name";
 	let el_month_name = document.getElementsByClassName(cln_month_name)[0];
+	return el_month_name;
+}
+function cal_hdr_year_el(cal_cell_name) {
+	let cln_year_name = cal_cell_name + "_year_name";
 	let el_year_name = document.getElementsByClassName(cln_year_name)[0];
-	el_month_name.innerHTML = cal_month_names()[with_date.getMonth()];
-	el_year_name.innerHTML = with_date.getFullYear();
+	return el_year_name;
+}
+function cal_update_header(cal_cell_name, with_date) {
+	cal_hdr_month_el().innerHTML = cal_month_names()[with_date.getMonth()];
+	cal_hdr_year_el().innerHTML = with_date.getFullYear();
 }
 
-// XXTODO: redesign to accept the date from outside so that
-//         re-plotting the calendar with new date is possible.
 function cal(cal_cell_name) {
-	let cur_date = new Date();
+	let el_month = cal_hdr_month_el(cal_cell_name);
+	let el_year = cal_hdr_year_el(cal_cell_name);
+console.log(el_month);
+console.log(el_year);
+	var to_date;
+	if (el_month.innerHTML === "" || el_month.innerHTML === "") {
+console.log('resetting!!');
+		to_date = new Date();
+		el_month.innerHTML = cal_month_names()[to_date.getMonth()];
+		el_year.innerHTML = to_date.getFullYear();
+	} else {
+console.log('using parsed date from html');
+console.log(el_year.innerHTML);
+console.log(el_month.innerHTML);
+		month_num = cal_month_index(el_month.innerHTML);
+		to_date = new Date(parseInt(el_year.innerHTML), parseInt(month_num));
+console.log(to_date);
+	}
+	cal_draw(cal_cell_name, to_date);
+}
 
-	cal_update_header(cal_cell_name, cur_date);
-
-console.log("cur_date", cur_date);
-	let fst_of_month = new Date(cur_date.getFullYear(), cur_date.getMonth());
-console.log("fst_of_month", fst_of_month);
-console.log("fst_of_month get day: ", fst_of_month.getDay());
+function cal_draw(cal_cell_name, month_date) {
 	//Sun=0,Mon=1,Tue=2,Wed=3,Thu=4,Fri=5,Sat=6 <- getDay()
 	//Mon=0,Tue=1,Wed=2,Thu=3,Fri=4,Sat=5,Sun=6 <- us
-	let skip_days_num = fst_of_month.getDay() - 1;
-console.log("skip_days_num", skip_days_num);
+console.log(month_date);
+	let skip_days_num = month_date.getDay() - 1;
 	let el_days = document.getElementsByClassName(cal_cell_name);
-	let day_to_draw = 1;
+	let idx_date = new Date(month_date.getFullYear(), month_date.getMonth(), 1);
+	let start_month = idx_date.getMonth();
 	for (el_day of el_days) {
 		if (skip_days_num > 0) {
+			el_day.innerHTML = "";
 			skip_days_num -= 1;
 			continue;
 		}
-console.log("day_to_draw", day_to_draw);
-		let idx_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), day_to_draw);
-//console.log("idx_date", idx_date);
-		el_day.innerHTML = idx_date.getDate();
-		if (day_to_draw === cur_date.getDate()) {
-			//el_day.setAttribute('class', el_day.getAttribute('class') + " active")
-			//el_day.innerHTML = "*" + el_day.innerHTML;
-			el_day.className += " active";
-		}
-		day_to_draw += 1;
-		idx_date = null;
+		let same_month = idx_date.getMonth() == start_month;
+		el_day.innerHTML = (same_month) ? idx_date.getDate() : "";
+		idx_date.setDate(idx_date.getDate() + 1);
 	}
 }
 
@@ -101,14 +112,14 @@ function cal_move_back_or_forth(cal_cell_name, direction) {
 
 	el_month_name.innerHTML = cal_month_names()[month_num_next];
 	el_year_name.innerHTML = year_num_next;
-	
-	// XX TODO redraw calendar here!!!
 }
 function cal_move_back(cln) {
 	cal_move_back_or_forth(cln, -1);
+	cal(cln);
 }
 function cal_move_forward(cln) {
 	cal_move_back_or_forth(cln, 1);
+	cal(cln);
 }
 </script>
 
