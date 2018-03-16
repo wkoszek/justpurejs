@@ -96,9 +96,10 @@ console.log("start_month", start_month);
 
 //console.log("idx_date", idx_date);
 //console.log("now_date", now_date);
-		el_day.className = " daycell";
+		console.log(el_day.classList);
+		el_day.classList.remove("active");
 		if (date_yyyymmdd_eq(idx_date, now_date)) {
-			el_day.className += " active";
+			el_day.classList.add("active");
 		}
 		idx_date.setDate(idx_date.getDate() + 1);
 	}
