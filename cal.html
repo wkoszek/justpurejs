@@ -35,6 +35,8 @@ function cal_update_header(cal_cell_name, with_date) {
 	el_year_name.innerHTML = with_date.getFullYear();
 }
 
+// XXTODO: redesign to accept the date from outside so that
+//         re-plotting the calendar with new date is possible.
 function cal(cal_cell_name) {
 	let cur_date = new Date();
 
