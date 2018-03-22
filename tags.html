@@ -1,0 +1,186 @@
+<!--
+@todo: report a bug to Kapeli that if the Dash has a dark theme turned on,
+       and we try to browse something with HTML colors, then the stuff gets
+       messed up.
+@todo: find how to do variable argument functions in javascript
+
+	// Doing stupid copy & paste stuff sucks. I sometimes wonder if copy & paste
+	// shouldn't be prohibited!!!!
+
+        making variable names too long sometimes sucks, especitally if it has ..able etc..
+	endings.
+
+@todo: need to go now, but will work on putting the tags from the <spans> back to the
+       <input> field so that the user can also put tags into the input field.
+-->
+<input type="text" size="50" />
+<br />
+
+<style>
+span.tag { background-color: lightyellow; margin-right: 2%; }
+span.tag_add, span.tag_remove { background-color: yellow; color: lightgray; }
+span.tag_add:hover { color: gray; }
+
+// eh. colors look bad, but lets leave them for now. I need to get inspired with some decent
+// websites.
+</style>
+
+<!-- lets try to do a template for the tag_add/tag_remove which I'll later clone-->
+<!-- it'll help me not do too much fiddling with mixing code and layout -->
+
+<span class="tag_add_remove_template" hidden>
+  <span class="tag_remove">&nbsp;-&nbsp;</span>
+  <span class="tag_add">&nbsp;+&nbsp;</span>
+</span>
+
+
+active:
+<br />
+<span class="tags_active">
+  <!-- will try to redesign it a little to make shifting back and forth easier -->
+
+  <span class="tag">
+    <span class="tag_remove">&nbsp;-&nbsp;</span>
+    <span class="tag_name">c</span>
+  </span>
+</span>
+<br />
+<br />
+
+available:
+<br />
+
+<span class="tags_avail">
+
+  <span class="tag">
+    <span class="tag_add">&nbsp;+&nbsp;</span>
+    <span class="tag_name">programming</span>
+  </span>
+
+  <span class="tag">
+    <span class="tag_add">&nbsp;+&nbsp;</span>
+    <span class="tag_name">ruby</span>
+  </span>
+
+  <span class="tag">
+    <span class="tag_add">&nbsp;+&nbsp;</span>
+    <span class="tag_name">backend</span>
+  </span>
+
+</span>
+
+<br />
+<br />
+
+<script>
+
+// stuff in here mostly works, so we'll just re-factor code to make it more reusable.
+// i think mostly this is so that I can have more than one instance of "tags" feature.
+
+// @todo: check why `function` isn't required in the class. that's a little odd.
+// @todo: figure out how to do page up/down on logitech k380 keyboard whicih i'm using. looks i
+// haven't figured that out yet.
+// gee. it's like bleeding today
+
+class WKTags {
+
+	constructor(cln) {
+		console.assert(cln === "tags", "for now only 'tags' name is supported");
+		this.cln = cln
+	}
+
+	tag_dbg() {
+		let s = "dbg:";
+		for (let arg of arguments) {
+			s += arg;
+			s += " ";
+		}
+		console.log(s);
+	}
+
+	tag_remove(evt) {
+		this.tag_dbg("tag remove", evt);
+		this.tag_add_or_remove(evt, -1);
+	}
+
+	tag_add(evt) {
+		this.tag_dbg("tag add", evt);
+		this.tag_add_or_remove(evt, 1);
+	}
+
+	tag_add_or_remove(evt, op_num) {
+		// tag_add() and tag_remove() are the same in the sense that they move an item
+		// from one list to another. so we will just stick stuff to 1 function called
+		// with an appropriate argument
+
+		// debug
+		this.tag_dbg(evt.srcElement.parentNode);
+
+		var tags_dest;
+		var tag_oper_el;
+		if (op_num == 1) {
+			// move from available to active
+			tags_dest = document.querySelectorAll("span.tags_active")[0];
+			tag_oper_el = document.querySelectorAll("span.tag_add_remove_template > span.tag_remove")[0];
+		} else {
+			// remove from active to available
+			tags_dest = document.querySelectorAll("span.tags_avail")[0];
+			tag_oper_el = document.querySelectorAll("span.tag_add_remove_template > span.tag_add")[0];
+		}
+		console.assert(tags_dest != null, "ops. tags_dest == null");
+		console.assert(tag_oper_el != null, "ops. tag_oper == null");
+		this.tag_dbg(tags_dest);
+		this.tag_dbg(tag_oper_el);
+
+		// we clone tag_oper first. then we take care of tag anme
+		// tag name is the 2nd <span> after 1st, which is [+] or [-] and it must be copied
+		// then we can remove the original <span class="tag"> from the source list
+		let tag_oper = tag_oper_el.cloneNode(true);
+		let tag_name = evt.srcElement.parentNode.children[1].cloneNode(true);
+		evt.srcElement.parentNode.remove();
+
+		let this_saved = this;
+		tag_oper.addEventListener('click', function(evt) {
+			console.log("xx");
+			if (op_num == 1) {
+				this_saved.tag_remove(evt);
+			} else {
+				this_saved.tag_add(evt);
+			}
+		});
+
+		let to_add = document.createElement("span"); 
+		to_add.className = "tag";
+		to_add.appendChild(tag_oper);
+		to_add.appendChild(tag_name);
+
+		tags_dest.appendChild(to_add);
+	}
+
+	register() {
+		let tags_active = document.querySelectorAll("span.tags_active > span.tag > span.tag_remove");
+		this.tag_dbg(tags_active);
+		for (let tag_active of tags_active) {
+			this.tag_dbg(tag_active);
+			let this_saved = this;
+			tag_active.addEventListener('click', function(evt) {
+				this_saved.tag_remove(evt);
+			});
+		}
+
+		let tags_avail = document.querySelectorAll("span.tags_avail > span.tag > span.tag_add");
+		this.tag_dbg(tags_avail);
+		for (let tag_avail of tags_avail) {
+			this.tag_dbg(tag_avail);
+			let this_saved = this;
+			tag_avail.addEventListener('click', function(evt) {
+				this_saved.tag_add(evt);
+			});
+		}
+	}
+}
+
+let tags = new WKTags("tags");
+tags.register();
+
+</script>
