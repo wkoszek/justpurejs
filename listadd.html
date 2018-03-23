@@ -1,0 +1,144 @@
+<!--
+
+for wordmogul, in multiple places, I'll need dynamic lists.
+Basically you press a + and you get a new element in the list,
+ready for editing. will try to implement that now.
+
+xx: it's good to have a naming scheme and stick to it. mine will be:
+    whatever is _el, will be an element of the website (aka DOM structure).
+
+@todo: crap, i'm on the flight and missing html spec. I think I need to figure out
+       the <li> syntax
+
+xx: another naming convention that when, if sticked to, helps a lot:
+    if list is _list then the list item could be _list_item etc.
+
+    when i see 'list' blah blah adding and then '.._list_item' it makes more sense
+
+
+// i see some wiggling there. I think it's because the elements in there move
+// when we add a border.
+
+// I'm inspired by the "Remember The Milk" a little bit. When you hover there, it 
+// surrounds the element with the border and then when you click, you can actually
+// edit it. I want to have something similar. This is also a UI pattern in Jira.
+// RTM i can show you.
+// adding a pencil on the right will be another thing...
+
+@todo: learn how to put proper comments in css
+
+@todo: make a script to turn off all distracting apps when live coding and recording.
+
+@todo: maybe make a snippet thing which I could paste at the end/beginning of each file
+       and get a completion in vim
+
+@todo: see if Dash could be integrated with vim somehow for javascript completion.
+
+@todo: find how to do fading/blurs etc. when value is input and ENTER is pressed.
+       there should be a "glaze" around for 1s to indivate that the value is ok
+
+@todo: how to scale the <input> to a <li> width (probably not with size=)
+
+@todo: find out drag & drop stuff.
+
+
+@todo: FIND A WAY TO SAVE UNSELECTING INPUT FIELD
+
+-->
+
+<style>
+li       { border: solid 1px white; }
+li:hover { border: solid 1px lightblue; }
+#list    { width: 40%; }
+</style>
+
+<span class="list_add">+</span>
+
+<ul id="list">
+</ul>
+
+
+<script>
+
+function list_edit_finalize(evt) {
+	console.log(evt.currentTarget.value); // <- that works.
+	let input_val = evt.currentTarget.value;
+	
+	console.log("XXXXXXXXXX input_val", input_val);
+
+	let parent = evt.currentTarget.parentNode;
+	evt.currentTarget.remove();
+	parent.innerHTML = input_val;
+
+	// i kinda need to go back and forth from adding and 
+	// editing, which means adding event listeners
+	// in the right places.
+
+	parent.addEventListener('click', list_edit_start);
+	
+}
+
+function list_edit_start(evt) {
+	console.log('click of the ready element!');
+	console.log(evt.currentTarget); // <- wojtek: <li>wojtek</li>
+
+	let editing_val = evt.currentTarget.innerHTML; // wojtek
+	evt.currentTarget.innerHTML = "";
+
+	let input_el = document.createElement('input');
+	input_el.type = "text";
+	input_el.value = editing_val;
+
+	evt.currentTarget.appendChild(input_el);
+
+	input_el.focus();
+
+	input_el.addEventListener('keydown', function (evt) {
+		if (evt.code == 'Enter') {
+			list_edit_finalize(evt);
+		}
+	});
+
+
+	// sleepy. will flush the recording to the disk and fix it
+	// adter I wake up.
+
+	// something stinks here. I think there'll be a chance to add more code reuse
+	// anyway -- i always start really stupid and try to optimize later, when
+	// i understand stuff a little better.
+
+//	let list_item_new = document.createElement('li');
+//	list_item_new.appendChild(input_el);
+//
+//	let list = document.getElementById('list');
+//	list.appendChild(list_item_new);
+
+}
+
+function list_add(evt) {		// kinda stinks to name is list_add as it's 'editing' also, but
+					// we'll think of a better name soon
+	console.log("list_add");
+
+	let input_el = document.createElement('input');
+	input_el.type = "text";
+
+	let list_item_new = document.createElement('li');
+	list_item_new.appendChild(input_el);
+
+	let list = document.getElementById('list');
+	list.appendChild(list_item_new);
+
+	input_el.focus();
+
+	input_el.addEventListener('keydown', function (evt) {
+		if (evt.code == 'Enter') {
+			list_edit_finalize(evt);
+		}
+	});
+
+}
+
+let list_add_el = document.getElementsByClassName('list_add')[0];
+console.assert(list_add_el != null, "ops. list_add can't be null");
+list_add_el.addEventListener('click', list_add);
+</script>
