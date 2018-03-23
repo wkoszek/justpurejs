@@ -3,8 +3,7 @@ table, td { border: dotted 1px blue; }
 </style>
 
 <script>
-function toggle_pane(pane_base_name, pane_index) {
-	let pane_name = pane_base_name + pane_index;
+function toggle_pane(pane_name) {
 	console.log(pane_name);
 	let pane = document.getElementsByClassName(pane_name)[0];
 	console.log(pane);
@@ -17,25 +16,116 @@ function toggle_pane(pane_base_name, pane_index) {
 }
 </script>
 
-<table width="30%">
-  <tbody>
-    <tr>
-      <td colspan="3">
-        <span onclick="toggle_pane('pane', 1)"><u>left</u></span>
-        <span onclick="toggle_pane('pane', 2)"><u>center</u></span>
-        <span onclick="toggle_pane('pane', 3)"><u>right</u></span>
-      </td>
-    </tr>
-    <tr>
-      <td class="pane1">
-      	left
-      </td>
-      <td class="pane2">
-      	center
-      </td>
-      <td class="pane3">
-      	right
-      </td>
-    </tr>
-  </tbody>
-</table>
+
+
+
+
+<style>
+body {
+	font-family: "source code sans";
+	font-weight: bold;
+	font-size: 14px; 
+	margin: 0px;
+	padding: 0px;
+}
+div.footer {
+	position: absolute;
+	width: 100%;
+	background-color: #fefaf1; 
+	padding: 0px;
+	margin: 0px;
+	height: 30px;
+	bottom: 0px;
+}
+div.header {
+	width: 100%;
+	background-color: lightgray;
+	padding: 0px;
+	margin: 0px;
+	height: 30px;
+}
+div.pane_list {
+	float: left;
+	height: 100%;
+	background-color: lightblue;
+	width: 15%;
+}
+div.pane_item {
+	float: left;
+	height: 100%;
+	background-color: lightgreen;
+	width: 15%;
+}
+div.pane_edit {
+	float: left;
+	height: 100%;
+	background-color: OldLace;
+	width: 55%;
+}
+div.pane_details {
+	float: left;
+	height: 100%;
+	background-color: lightpink;
+	width: 15%;
+}
+div.container {
+	height: 100%;
+	bottom: 30px;
+}
+</style>
+
+<body>
+
+<!-- 
+@todo: fade-in/fade-out
+@todo: in-line svg
+-->
+<div class="container">
+	<div class="header">
+		<span onclick="toggle_pane('pane_list')"><u>pane_list</u></span>
+		<span onclick="toggle_pane('pane_item')"><u>pane_item</u></span>
+		<span onclick="toggle_pane('pane_edit')"><u>pane_edit</u></span>
+		<span onclick="toggle_pane('pane_details')"><u>pane_details</u></span>
+	</div>
+
+	<div>
+		<div class="pane_list">
+			pane_list
+			<a href="">eojte</a>
+			<br />
+			<br />
+
+			<a href="">eojte</a>
+			<br />
+			<br />
+
+			<a href="">eojte</a>
+			<br />
+			<br />
+
+			<a href="">eojte</a>
+			<br />
+			<br />
+		</div>
+
+		<div class="pane_item">
+			pane_item
+			<a href="">eojte</a>
+		</div>
+
+		<div class="pane_edit">
+			pane_edit
+		</div>
+
+		<div class="pane_details">
+			pane_details
+		</div>
+	</div>
+
+	<div class="footer">
+		<a href="">d</a>
+		sample
+	</div>
+</div>
+
+</body>
