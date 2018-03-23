@@ -1,0 +1,32 @@
+<script>
+function sqq(s) { return '"' + s + '"'; }
+function snl(s) { return s + "\n"; }
+function sqs(s1, s2) { return s1 + ": " + s2; }
+function ipp(v) {
+	console.log(v.value);
+
+	const fields = [ 'title', 'author' ];
+	for (field of fields) {
+		console.log(field);
+	}
+
+	let y = "";
+	y += snl("--");
+	y += sqs('title', snl(sqq(document.getElementById('title').value)));
+	y += sqs('author', snl(sqq(document.getElementById('author').value)));
+
+	let vals = document.getElementById('vals');
+	vals.value = y;
+	let vals_json = document.getElementById('vals');
+	vals_json.value = y;
+
+}
+</script>
+
+<input type="text" id="title" onkeyup="ipp(this)" size=100 /> <br /> <br />
+<input type="text" id="author" onkeyup="ipp(this)" size=100 /> <br /> <br />
+
+<textarea rows=20 cols=70 id="vals">
+</textarea>
+<textarea rows=20 cols=70 id="vals_json">
+</textarea>
