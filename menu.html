@@ -1,0 +1,45 @@
+<style>
+li.active {  background-color: lightyellow; }
+</style>
+
+
+<input size=100 id="cmd" />
+<ul id="menu">
+<li class="active">first
+<li>second
+<li>third
+</ul>
+
+<script>
+
+function menu_move(direction) {
+	let menu = document.getElementById('menu');
+	let menu_len = menu.children.length;
+	let menui_selected = 0;
+	for (let menui of menu.children) {
+		if (menui.className === 'active') {
+			menui.className = '';
+			break;
+		}
+		menui_selected += 1;
+		console.log(menui);
+	}
+	let item_to_sel = (menui_selected + direction) % menu_len;
+	if (item_to_sel < 0) {
+		item_to_sel = menu_len - 1;
+	}
+	console.assert(item_to_sel >= 0, "ops. wrong index!!");
+	menu.children[item_to_sel].className = 'active';
+}
+
+document.getElementById('cmd').focus();
+document.getElementById('cmd').addEventListener('keydown', (event) => {
+	if (event.code === 'ArrowDown') {
+		menu_move(1);
+	} else if (event.code === 'ArrowUp') {
+		menu_move(-1);
+	}
+	console.log(event);
+});
+
+</script>
