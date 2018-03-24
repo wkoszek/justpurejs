@@ -79,6 +79,9 @@ function list_edit_finalize(evt) {
 }
 
 function list_edit_start(evt) {
+	// remove the event listener for the duration of editing.
+	this.removeEventListener('click', list_edit_start);
+
 	console.log('list_edit_start');
 	console.log(evt.currentTarget); // <- wojtek: <li>wojtek</li>
 
