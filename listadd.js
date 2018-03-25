@@ -1,4 +1,6 @@
 function list_edit_finalize(evt) {
+	// we enter this function when we're <li><input>value...
+	// and we want to become <li>value
 	console.log('list_edit_finalize');
 
 	console.log(evt.currentTarget.value); // <- that works.
@@ -16,10 +18,14 @@ function list_edit_finalize(evt) {
 }
 
 function list_edit_start(evt) {
+	// we enter this function when there's a <li>text..
+	// element, we click it and expect to change to <li><input>text..
+	console.log('list_edit_start');
+
+
 	// remove the event listener for the duration of editing.
 	this.removeEventListener('click', list_edit_start);
 
-	console.log('list_edit_start');
 	console.log(evt.currentTarget); // <- wojtek: <li>wojtek</li>
 
 	let editing_val = evt.currentTarget.innerHTML; // wojtek
@@ -34,19 +40,12 @@ function list_edit_start(evt) {
 
 	input_el.focus();
 
-	input_el.addEventListener('keydown', function (evt) {
-		if (evt.code == 'Enter') {
-			list_edit_finalize(evt);
-		}
-	});
+	list_input_prepare(input_el);
 
-
-	// sleepy. will flush the recording to the disk and fix it
-	// adter I wake up.
-
-	// something stinks here. I think there'll be a chance to add more code reuse
-	// anyway -- i always start really stupid and try to optimize later, when
-	// i understand stuff a little better.
+//      sleepy. will flush the recording to the disk and fix it adter I
+//      wake up.  something stinks here. I think there'll be a chance to
+//      add more code reuse anyway -- i always start really stupid and
+//      try to optimize later, when i understand stuff a little better.
 
 //	let list_item_new = document.createElement('li');
 //	list_item_new.appendChild(input_el);
@@ -56,8 +55,26 @@ function list_edit_start(evt) {
 
 }
 
-function list_add(evt) {		// kinda stinks to name is list_add as it's 'editing' also, but
-					// we'll think of a better name soon
+function list_input_prepare(input_el) {
+	// this function registers common listeners to the <input>
+	// object which we need to maintain the editing flow.
+	console.log('list_input_prepare');
+
+	input_el.addEventListener('keydown', function (evt) {
+		if (evt.code == 'Enter') {
+			list_edit_finalize(evt);
+		}
+	});
+	input_el.addEventListener('focusout', function (evt) {
+		list_edit_finalize(evt);
+	});
+}
+
+function list_add(evt) {
+	// we enter this function on + press. there's nothing but
+	// the <ul> or couple of items <ul><li>..<li>..<li>..</ul>
+	// and we just add the new one
+
 	console.log("list_add");
 
 	let input_el = document.createElement('input');
@@ -72,26 +89,9 @@ function list_add(evt) {		// kinda stinks to name is list_add as it's 'editing' 
 
 	input_el.focus();
 
-	input_el.addEventListener('keydown', function (evt) {
-		if (evt.code == 'Enter') {
-			list_edit_finalize(evt);
-		}
-	});
-
+	list_input_prepare(input_el);
 }
 
 let list_add_el = document.getElementsByClassName('list_add')[0];
 console.assert(list_add_el != null, "ops. list_add can't be null");
 list_add_el.addEventListener('click', list_add);
-
-document.addEventListener('click', function () {
-	for (let input_el of document.getElementsByTagName('input')) {
-		console.log(input_el);
-		//let input_elv = input_el.value;
-		//let parent = input_el.parentNode;
-		//input_el.remove();
-		//parent.innerHTML = input_el.value;
-		//parent.addEventListener('click', list_edit_start);
-	}
-	console.log('dddggg');
-});
